@@ -18,15 +18,15 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(private val repository: MovieRepository):ViewModel(){
 
-    private val _movielist =MutableLiveData<List<MovieListItem>>()
-    val movieList:LiveData<List<MovieListItem>> = _movielist
+    private val _movielist =MutableLiveData<List<MovieListItem>?>()
+    val movieList:LiveData<List<MovieListItem>?> = _movielist
 
     init{
         var apiService=RetrofitBuilder.getapiService()
         viewModelScope.launch(Dispatchers.IO) {
-            var data=apiService.getmovieslist()
-            _movielist.postValue(data.body())
-            Log.d(TAG, "movielist item: ${data.body()}")
+            var data=repository.getmovielist()
+            _movielist.postValue(data)
+            Log.d(TAG, "movielist item: ${data}")
         }
     }
 
